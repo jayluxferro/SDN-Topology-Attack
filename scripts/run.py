@@ -10,9 +10,10 @@ scenario = int(sys.argv[2])
 params = ['iperf']
 params.extend(sys.argv[3:])
 
+iterations = db.getScenario(scenario)
 
-for x in range(1000):
-    print("[ => ]: {}".format(x))
+for x in range(10000 - iterations):
+    print("[ => ]: {}".format(iterations + x + 1))
     data = fx.iperf(params)
 
     # extracting the data

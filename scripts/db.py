@@ -13,3 +13,9 @@ def addData(data):
     cursor = conn.cursor()
     cursor.execute("insert into data(host, transfer, bandwidth, interval, scenario) values(?, ?, ?, ?, ?)", tuple(data))
     conn.commit()
+
+def getScenario(scenario):
+    conn = init()
+    cursor = conn.cursor()
+    cursor.execute("select count(*) from data where scenario=?", (scenario,))
+    return cursor.fetchone()[0]

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+mn -c
 if [ -z $1 ];
 then
   remote_ip='127.0.0.1'

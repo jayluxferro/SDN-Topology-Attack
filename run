@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# clean up
+mn -c
+
+# inits
+researchPath=~/dev/research/SDN-Topology-Attack
+floodlight=~/dev/networking/floodlight
+
+# events
+$researchPath/scripts/oss
+
+cd $floodlight
+xterm ./run&
+
+cd $researchPath/scripts
+$researchPath/topology/tree-topo
+
+
