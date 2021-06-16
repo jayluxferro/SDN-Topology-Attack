@@ -1,0 +1,17 @@
+seaborn
+scapy
+psutil
+keras
+gensim
+numpy
+scipy
+python-dateutil
+pandas
+pydot
+pydotplus
+graphviz
+scikit-learn
+matplotlib
+tensorflow
+#graphviz
+pydot
