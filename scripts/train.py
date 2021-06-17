@@ -149,4 +149,4 @@ for _ in range(iterations):
     for data in data_source:
         for split in splits:
             runScenario(dataSourcePath + data, split)
-            sys.exit()
+            #sys.exit()
