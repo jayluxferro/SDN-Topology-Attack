@@ -45,3 +45,9 @@ def getAvgPRAllData(tsize, model):
     cursor = db.cursor()
     cursor.execute("select avg(precision), avg(recall) from all_data where tsize=? and model=?", (tsize, model))
     return cursor.fetchone()
+
+def fetchTable(tableName):
+    db = init()
+    cursor = db.cursor()
+    cursor.execute('select * from {}'.format(tableName))
+    return cursor.fetchall()

@@ -107,12 +107,14 @@ def runScenario(data_file, test_size):
     y_pred = model.predict(X_test)
     db.addAllData(data_file, test_size, y_test, y_pred, 'gnb')
 
+    """
     model = BernoulliNB()
     model.fit(X_train, y_train)
     lg.success('Bernoulli NB: {:.4f}'.format(model.score(X_test, y_test)))
     fx.saveLinearModel('bnb', model)
     y_pred = model.predict(X_test)
     db.addAllData(data_file, test_size, y_test, y_pred, 'bnb')
+    """
 
     model = MultinomialNB()
     model.fit(X_train, y_train)
