@@ -51,3 +51,9 @@ def fetchTable(tableName):
     cursor = db.cursor()
     cursor.execute('select * from {}'.format(tableName))
     return cursor.fetchall()
+
+def fetchKPIs(ratio, model):
+    db = init()
+    cursor = db.cursor()
+    cursor.execute('select avg(precision), avg(recall), avg(accuracy), avg(f1) from all_data where tsize=? and model=?', (ratio, model))
+    return cursor.fetchone()

@@ -20,6 +20,8 @@ header=['Tx','Bw','Interval','Label']
 colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'peru', 'teal']
 figsize = (8, 4)
 ratio_legend = ['80/20', '70/30', '60/40']
+all_data_results = 'all_data_results.csv'
+
 
 def iperf(params):
     start = time.time()
@@ -203,4 +205,25 @@ def plotAllData(allData, index, modelLegend):
     plt.tight_layout()
     plt.savefig(results_path + 'pr_summary_{}.eps'.format(index))
     plt.savefig(results_path + 'pr_summary_{}.png'.format(index), dpi=1200)
+    #plt.show()
+
+def plotAllDataAccuracy(allData, index, modelLegend):
+    plt.figure(figsize=figsize)
+    counter = 0
+    for d in allData:
+        node = d[index]
+        holder = sortData(node[0], node[2])
+        xticks = np.linspace(1, len(holder[0]), len(holder[0]))
+        plt.plot(xticks, holder[1], '-*', color=colors[counter], label=modelLegend[counter])
+        #plt.axvline(x=0.86, linewidth=4, color='r')
+        #print(node[0], node[1])
+        plt.xlabel('Scenarios')
+        plt.ylabel('Accuracy')
+        plt.xticks(xticks)
+        plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+        counter += 1
+    plt.title('Accuracy of the models for ' + ratio_legend[index] + ' Train-Test Split Ratio')
+    plt.tight_layout()
+    plt.savefig(results_path + 'ac_summary_{}.eps'.format(index))
+    plt.savefig(results_path + 'ac_summary_{}.png'.format(index), dpi=1200)
     #plt.show()
