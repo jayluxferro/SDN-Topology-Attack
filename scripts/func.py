@@ -16,11 +16,16 @@ import numpy as np
 from math import log10 as log
 
 results_path='../results/'
+data_path = results_path + 'data/'
 header=['Tx','Bw','Interval','Label']
 colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'peru', 'teal']
 figsize = (8, 4)
 ratio_legend = ['80/20', '70/30', '60/40']
-all_data_results = 'all_data_results.csv'
+ratio_path_label = ['8020', '7030', '6040']
+all_data_results = 'summary.csv'
+models = ['knn', 'lr', 'lsvc', 'svc', 'dt', 'rf', 'gb', 'gnb', 'mnb', 'lstm']
+modelLegend = ['KNN', 'LogisticRegression', 'LinearSVC', 'SVC', 'DecisionTree', 'RandomForest', 'GradientBoosting', 'GaussianNB', 'MultinomialNB', 'LSTM']
+splitRatios = [0.2, 0.3, 0.4]
 
 
 def iperf(params):
@@ -148,6 +153,16 @@ def sortData(x, y):
     new_x, new_y = zip(*L)
     return list(new_x), list(new_y)
 
+def savePlotData(path, category, header, x, y, model, tsize):
+    data = header
+    counter = 0
+    for _x in x:
+        data += '{},{},{},{}\n'.format(x[counter], y[counter], model, tsize)
+        counter += 1
+
+    with open(path, 'w') as f:
+        f.write(data)
+
 def plotAllDataRecall(allData, index, models,  modelLegend):
     plt.figure(figsize=figsize)
     counter = 0
@@ -161,6 +176,8 @@ def plotAllDataRecall(allData, index, models,  modelLegend):
         plt.ylabel('Recall')
         plt.xticks(xticks)
         plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+        ## save data
+        savePlotData(data_path + 'recall/{}/{}.csv'.format(ratio_path_label[index], modelLegend[counter]), modelLegend[counter], "Scenarios, Recall, Model, TSize\n", xticks, holder[0], modelLegend[counter], ratio_legend[index])
         counter += 1
     plt.title('The Recall rate of the models (' + ratio_legend[index] + ' Train-Test Split Ratio) for 20 Scenarios')
     plt.tight_layout()
@@ -181,6 +198,8 @@ def plotAllDataPrecision(allData, index, models,  modelLegend):
         plt.ylabel('Precision')
         plt.xticks(xticks)
         plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+        ## save data
+        savePlotData(data_path + 'precision/{}/{}.csv'.format(ratio_path_label[index], modelLegend[counter]), modelLegend[counter], "Scenarios, Precision, Model, TSize\n", xticks, holder[1], modelLegend[counter], ratio_legend[index])
         counter += 1
     plt.title('The Precision of the models (' + ratio_legend[index] + ' Train-Test Split Ratio) for 20 Scenarios')
     plt.tight_layout()
@@ -221,6 +240,8 @@ def plotAllDataAccuracy(allData, index, modelLegend):
         plt.ylabel('Accuracy')
         plt.xticks(xticks)
         plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+        ## save data
+        savePlotData(data_path + 'accuracy/{}/{}.csv'.format(ratio_path_label[index], modelLegend[counter]), modelLegend[counter], "Scenarios, Accuracy, Model, TSize\n", xticks, holder[1], modelLegend[counter], ratio_legend[index])
         counter += 1
     plt.title('Accuracy of the models for ' + ratio_legend[index] + ' Train-Test Split Ratio')
     plt.tight_layout()

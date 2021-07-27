@@ -5,10 +5,9 @@ All Data Analysis
 import db
 import func as fx
 
-models = ['knn', 'lr', 'lsvc', 'svc', 'dt', 'rf', 'gb', 'gnb', 'mnb', 'lstm']
-modelLegend = ['KNN', 'LogisticRegression', 'LinearSVC', 'SVC', 'DecisionTree', 'RandomForest', 'GradientBoosting', 'GaussianNB', 'MultinomialNB', 'LSTM']
-splitRatios = [0.2, 0.3, 0.4]
-#splitRatios = [0.2]
+models = fx.models
+modelLegend = fx.modelLegend
+splitRatios = fx.splitRatios
 
 allData = [[[[] for _ in range(3)] for _ in range(len(splitRatios))] for _ in range(len(models))] # [model] => [split] => [[recall], [precision], [accuracy]]
 
@@ -23,7 +22,7 @@ for d in db.fetchTable('all_data'):
     node[1].append(precision)
     node[2].append(accuracy)
 
-dataStoragePath = fx.results_path + fx.all_data_results
+dataStoragePath = fx.data_path + fx.all_data_results
 _data = 'Precision,Recall,Accuracy,F1,Model,Model-Name,T-Size\n'
 for ratio in splitRatios:
     for model in models:
