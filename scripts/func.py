@@ -23,10 +23,12 @@ figsize = (8, 4)
 ratio_legend = ['80/20', '70/30', '60/40']
 ratio_path_label = ['8020', '7030', '6040']
 all_data_results = 'summary.csv'
-models = ['knn', 'lr', 'lsvc', 'svc', 'dt', 'rf', 'gb', 'gnb', 'mnb', 'lstm']
-modelLegend = ['KNN', 'LogisticRegression', 'LinearSVC', 'SVC', 'DecisionTree', 'RandomForest', 'GradientBoosting', 'GaussianNB', 'MultinomialNB', 'LSTM']
+#models = ['knn', 'lr', 'lsvc', 'svc', 'dt', 'rf', 'gb', 'gnb', 'mnb', 'lstm']
+#modelLegend = ['KNN', 'LogisticRegression', 'LinearSVC', 'SVC', 'DecisionTree', 'RandomForest', 'GradientBoosting', 'GaussianNB', 'MultinomialNB', 'LSTM']
+models = ['knn', 'lr', 'svc', 'dt', 'rf', 'gb', 'lstm']
+modelLegend = ['KNN', 'LogisticRegression', 'SVC', 'DecisionTree', 'RandomForest', 'GradientBoosting', 'LSTM']
 splitRatios = [0.2, 0.3, 0.4]
-
+round_val = 4
 
 def iperf(params):
     start = time.time()
@@ -151,7 +153,7 @@ def plotSummary(precisionList, recallList, legends, test_size):
 def sortData(x, y):
     L = sorted(zip(x,y), key=operator.itemgetter(0))
     new_x, new_y = zip(*L)
-    return list(new_x), list(new_y)
+    return [ round(x, round_val) for x in list(new_x) ], [ round(x, round_val) for x in list(new_y) ]
 
 def savePlotData(path, category, header, x, y, model, tsize):
     data = header
@@ -179,6 +181,7 @@ def plotAllDataRecall(allData, index, models,  modelLegend):
         ## save data
         savePlotData(data_path + 'recall/{}/{}.csv'.format(ratio_path_label[index], modelLegend[counter]), modelLegend[counter], "Scenarios, Recall, Model, TSize\n", xticks, holder[0], modelLegend[counter], ratio_legend[index])
         counter += 1
+    plt.ylim((0.998, 1.00001))
     plt.title('The Recall rate of the models (' + ratio_legend[index] + ' Train-Test Split Ratio) for 20 Scenarios')
     plt.tight_layout()
     plt.savefig(results_path + 'r_model_summary_{}.eps'.format(index))
@@ -213,13 +216,15 @@ def plotAllData(allData, index, modelLegend):
     for d in allData:
         node = d[index]
         holder = sortData(node[0], node[1])
-        plt.plot(holder[0], holder[1], '-*', color=colors[counter], label=modelLegend[counter])
+        plt.plot(holder[0], holder[1], '*', color=colors[counter], label=modelLegend[counter])
         #plt.axvline(x=0.86, linewidth=4, color='r')
         #print(node[0], node[1])
+        counter += 1
         plt.xlabel('Recall')
         plt.ylabel('Precision')
         plt.legend(bbox_to_anchor=(1,1), loc="upper left")
-        counter += 1
+        plt.gca().margins(x=0)
+    plt.xlim((0.99, 1.0001))
     plt.title('Precision against Recall for ' + ratio_legend[index] + ' Train-Test Split Ratio')
     plt.tight_layout()
     plt.savefig(results_path + 'pr_summary_{}.eps'.format(index))

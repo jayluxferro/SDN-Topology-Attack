@@ -12,15 +12,16 @@ splitRatios = fx.splitRatios
 allData = [[[[] for _ in range(3)] for _ in range(len(splitRatios))] for _ in range(len(models))] # [model] => [split] => [[recall], [precision], [accuracy]]
 
 for d in db.fetchTable('all_data'):
-    modelIndex = models.index(d['model'])
-    splitIndex = splitRatios.index(d['tsize'])
-    recall = d['recall']
-    precision = d['precision']
-    accuracy = d['accuracy']
-    node = allData[modelIndex][splitIndex]
-    node[0].append(recall)
-    node[1].append(precision)
-    node[2].append(accuracy)
+    if d['model'] in models:
+        modelIndex = models.index(d['model'])
+        splitIndex = splitRatios.index(d['tsize'])
+        recall = d['recall']
+        precision = d['precision']
+        accuracy = d['accuracy']
+        node = allData[modelIndex][splitIndex]
+        node[0].append(recall)
+        node[1].append(precision)
+        node[2].append(accuracy)
 
 dataStoragePath = fx.data_path + fx.all_data_results
 _data = 'Precision,Recall,Accuracy,F1,Model,Model-Name,T-Size\n'
